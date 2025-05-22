@@ -11,9 +11,16 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AttendanceImport } from './routes/Attendance'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const AttendanceRoute = AttendanceImport.update({
+  id: '/Attendance',
+  path: '/Attendance',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -32,6 +39,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/Attendance': {
+      id: '/Attendance'
+      path: '/Attendance'
+      fullPath: '/Attendance'
+      preLoaderRoute: typeof AttendanceImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +53,37 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Attendance': typeof AttendanceRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Attendance': typeof AttendanceRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/Attendance': typeof AttendanceRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/Attendance'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/Attendance'
+  id: '__root__' | '/' | '/Attendance'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AttendanceRoute: typeof AttendanceRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AttendanceRoute: AttendanceRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +96,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/Attendance"
       ]
     },
     "/": {
       "filePath": "index.jsx"
+    },
+    "/Attendance": {
+      "filePath": "Attendance.tsx"
     }
   }
 }
